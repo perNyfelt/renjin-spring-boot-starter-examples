@@ -14,7 +14,6 @@
 
     <modules>
         <module>webapp</module>
-        <module>reportapp</module>
         <module>restapp</module>
     </modules>
 

@@ -32,6 +32,7 @@ for (item in items) {
 }
 
 lineItems[nrow(lineItems) +1 ,] <- c("Total", colSums(lineItems[, -1]))
+# we can bind variables so that they can be retrieved with getVariable from the Environment from the scriptEngine
 assign("summaryTable", lineItems, .GlobalEnv)
 
 
@@ -45,6 +46,7 @@ barplot(monthsMatrix, main="Monthly results"
 
 )
 dev.off()
+# The last thing is the return value of the script
 outFile
 
 
