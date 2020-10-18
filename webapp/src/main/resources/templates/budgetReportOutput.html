@@ -1,0 +1,43 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:include="snippets/header.html  :: headerFragment">
+   <title id="pageTitle">BudgetReport</title>
+</head>
+<body>
+   <div class="container">
+
+      <h2>Budget report</h2>
+
+      <img th:src="${report.getCostSummaryImage()}" />
+
+      <table class="table">
+         <thead>
+         <tr>
+            <th> Description </th>
+            <th> Jan </th>
+            <th> Feb </th>
+            <th> Mar </th>
+            <th> Apr </th>
+            <th> May </th>
+            <th> Jun </th>
+            <th> Jul </th>
+            <th> Aug </th>
+            <th> Sep </th>
+            <th> Oct </th>
+            <th> Nov </th>
+            <th> Dec </th>
+         </tr>
+         </thead>
+         <tbody>
+         <tr th:each="row : ${report.getSummaryTable().getRowList()}">
+            <td th:each="col : ${row}"><span th:text="${col}"></span></td>
+         </tr>
+         </tbody>
+      </table>
+      <div class="pt-3">
+         <a href="/" class="btn btn-secondary">Home</a>
+      </div>
+   </div>
+
+
+</body>
+</html>
