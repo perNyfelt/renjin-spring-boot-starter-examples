@@ -6,7 +6,7 @@ import java.util.List;
 public class LineItem {
 
   private String name;
-  private List<Integer> monthlyCosts = new ArrayList<>();
+  private final List<Integer> monthlyCosts = new ArrayList<>();
 
   public LineItem() {
     // default ctor
@@ -28,7 +28,11 @@ public class LineItem {
     return monthlyCosts;
   }
 
-  public void addMonthlyCosts(Integer monthlyCost) {
+  public void addMonthlyCost(Integer monthlyCost) {
     monthlyCosts.add(monthlyCost);
+  }
+
+  public void addMonthlyCosts(List<Integer> monthlyCosts) {
+    this.monthlyCosts.addAll(monthlyCosts);
   }
 }

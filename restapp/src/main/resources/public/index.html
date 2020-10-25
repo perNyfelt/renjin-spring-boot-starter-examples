@@ -33,10 +33,14 @@
                <div class="col-md-1">Dec</div>
             </div>
          </div>
+         <div id="budgetFormRows">
 
+         </div>
+
+         <img id="chart" src="" alt=""/>
          <div class="pt-3 justify-content-between">
-            <button class="btn btn-primary" type="button" onclick="addRow()">Add row</button>
-            <button class="btn btn-success" type="submit">Submit</button>
+            <button id="addRowButton" class="btn btn-primary" type="button" onclick="addRow()">Add row</button>
+            <button id="submitFormButton" class="btn btn-success" type="button" onclick="sendBudgetForm()">Submit</button>
             <a href="/" class="btn btn-secondary">Home</a>
          </div>
       </form>
@@ -71,17 +75,17 @@
 
    function addRow() {
       let row = $("#templates").find("div[data-type='row']").clone(true, true);
-      $("#budgetFormHeader").after(row);
+      $("#budgetFormRows").append(row);
+      return row;
    }
 
    function showBudgetForm() {
       $("#showBudgetButton").hide();
       $("#budgetInputForm").show();
+      addRow();
    }
 
-   $('button[type=submit]').click(function(e) {
-      //Prevent default submission of form
-      e.preventDefault();
+   function sendBudgetForm() {
       let budgetForm = $("#budgetForm");
       let actionUrl = budgetForm.prop("action");
       let json = [];
@@ -114,10 +118,21 @@
          .fail(function (xhr, status, error) {
             alert(xhr.responseText);
          });
-   });
+   }
 
    function showBudgetReport(budgetReport) {
+      $("#addRowButton").hide();
+      $("#submitFormButton").hide();
 
+      let chart = $("#chart");
+      chart.prop("src", budgetReport.costSummaryImage);
+      chart.show();
+      let row = addRow();
+      let lastRowIndex = budgetReport.summaryTable.rowList.length -1;
+      let summaryRow = budgetReport.summaryTable.rowList[lastRowIndex];
+      row.find("input").each(function(index, cell) {
+         $(this).val(summaryRow[index]);
+      });
    }
 </script>
 </html>

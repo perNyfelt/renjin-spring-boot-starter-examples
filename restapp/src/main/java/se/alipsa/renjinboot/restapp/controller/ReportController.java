@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 import se.alipsa.renjinboot.restapp.model.BudgetReport;
 import se.alipsa.renjinboot.restapp.model.LineItem;
@@ -27,14 +28,13 @@ public class ReportController {
     this.reportService = reportService;
   }
 
-  @PostMapping(path = "/reports/budget", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public BudgetReport createBudgetReport(@RequestBody String json) {
+  @PostMapping(path = "/reports/budget")
+  public @ResponseBody BudgetReport createBudgetReport(@RequestBody String json) {
     try {
-      System.out.println("Got " + json);
+      System.out.println("createBudgetReport: Got " + json);
       ObjectMapper mapper = new ObjectMapper();
       List<LineItem> lineItems = mapper.readValue(json, new TypeReference<List<LineItem>>() {});
-      BudgetReport report = reportService.runBudgetReport(lineItems);
-      return report;
+      return reportService.runBudgetReport(lineItems);
     } catch (IOException | ScriptException e) {
       e.printStackTrace();
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);

@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -35,7 +36,7 @@ public class ReportService {
 
   public BudgetReport runBudgetReport(List<LineItem> lineItems) throws IOException, ScriptException {
     String script = fileContentOf("reports/BudgetReport.R");
-    StringArrayVector result = (StringArrayVector)analysisEngine.runScript(script);
+    StringArrayVector result = (StringArrayVector)analysisEngine.runScript(script, Collections.singletonMap("items", lineItems));
     String plotFilePath = result.asString();
     File plotFile = new File(plotFilePath);
     if (!plotFile.exists()) {
@@ -59,6 +60,6 @@ public class ReportService {
 
   private String contentAsBase64(String fullFileName) throws IOException {
     byte[] content = FileUtils.readFileToByteArray(new File(fullFileName));
-    return Base64.getEncoder().encodeToString(content);
+    return "data:image/png;base64, " + Base64.getEncoder().encodeToString(content);
   }
 }

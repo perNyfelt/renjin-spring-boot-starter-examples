@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.script.ScriptException;
+import java.util.Map;
 
 @Service
 public class AnalysisEngine {
@@ -24,9 +25,25 @@ public class AnalysisEngine {
     return (SEXP)scriptEngine.eval(script);
   }
 
+  public SEXP runScript(String script, Map<String, Object> params) throws ScriptException {
+    params.forEach(scriptEngine::put);
+    return (SEXP)scriptEngine.eval(script);
+  }
+
   public SEXP getVariable(String varName) {
     Environment global = scriptEngine.getSession().getGlobalEnvironment();
     Context topContext = scriptEngine.getSession().getTopLevelContext();
     return global.getVariable(topContext, varName);
+  }
+
+  /**
+   * will clear all objects includes hidden objects in the environment.
+   */
+  public void clearEnvironment() {
+    try {
+      scriptEngine.eval("rm(list = ls(all.names = TRUE))");
+    } catch (ScriptException e) {
+      throw new RuntimeException("Failed to clean environment", e);
+    }
   }
 }
